@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year 2026 — Elegant Greeting</title>
+    <meta name="description" content="A refined New Year 2026 greeting with gold accents, countdown and subtle animations">
+    <meta name="theme-color" content="#0b0711">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root{
+            --bg-a: #05030a;
+            --bg-b: #120417;
+            --gold-1: #f6e27a;
+            --gold-2: #ffd54a;
+            --glass: rgba(255,255,255,0.04);
+            --muted: rgba(255,255,255,0.7);
+        }
+        *{box-sizing:border-box;margin:0;padding:0}
+        html,body{height:100%}
+        body{
+            font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+            background: radial-gradient(1200px 600px at 10% 20%, rgba(255,215,0,0.03), transparent),
+                                    linear-gradient(180deg,var(--bg-a),var(--bg-b));
+            color:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:36px;
+        }
+
+        /* Subtle animated vignette */
+        .vignette{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(closest-side, rgba(255,255,255,0.02), transparent 40%);mix-blend-mode:overlay}
+
+        .scene{position:relative;z-index:10;max-width:1100px;width:100%;display:grid;grid-template-columns:1fr;place-items:center}
+
+        .card{
+            width:min(980px,96%);
+            padding:48px 56px;
+            border-radius:18px;
+            background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border:1px solid rgba(255,255,255,0.04);
+            box-shadow: 0 20px 60px rgba(3,2,9,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
+            backdrop-filter: blur(8px) saturate(1.1);
+            text-align:center;position:relative;overflow:visible
+        }
+
+        /* gold foil title */
+        .title{
+            font-family:'Cinzel', 'Playfair Display', serif;
+            font-weight:700;font-size:clamp(2rem,5vw,3.6rem);line-height:1;
+            margin-bottom:6px;letter-spacing:1px;
+            background: linear-gradient(90deg, var(--gold-1), var(--gold-2), #ffd8a8);
+            -webkit-background-clip:text; background-clip:text; color:transparent;
+            position:relative;display:inline-block;
+            text-shadow: 0 6px 30px rgba(255,204,80,0.06), 0 2px 8px rgba(0,0,0,0.6);
+        }
+
+        /* moving shine */
+        .title::after{
+            content:"";position:absolute;inset:0;left:-10%;background:linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 100%);
+            transform:skewX(-18deg);mix-blend-mode:screen;opacity:0.9;
+            animation:shine 3.8s linear infinite;
+        }
+
+        @keyframes shine{from{left:-30%}to{left:120%}}
+
+        .year{
+            display:block;font-family:'Cinzel', serif;font-size:clamp(3rem,9vw,6rem);margin:6px 0 12px;color:var(--gold-2);
+            text-shadow: 0 6px 30px rgba(255,205,80,0.12), 0 4px 18px rgba(0,0,0,0.6);
+            letter-spacing:4px;font-weight:700
+        }
+
+        .subtitle{color:var(--muted);font-size:clamp(1rem,2.6vw,1.15rem);margin-bottom:22px}
+
+        /* countdown pill */
+        #countdown{
+            display:inline-flex;gap:12px;align-items:center;justify-content:center;padding:12px 18px;border-radius:999px;background:linear-gradient(180deg, rgba(0,0,0,0.18), rgba(255,255,255,0.02));
+            border:1px solid rgba(255,215,0,0.06);color:var(--gold-1);font-weight:600;letter-spacing:1px;box-shadow:0 6px 30px rgba(0,0,0,0.5)
+        }
+
+        .controls{margin-top:26px;display:flex;gap:14px;align-items:center;justify-content:center}
+        .btn{
+            padding:12px 20px;border-radius:999px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--gold-2);cursor:pointer;font-weight:600;letter-spacing:0.6px;backdrop-filter:blur(4px);
+            transition:transform .22s ease, box-shadow .22s ease;box-shadow:0 8px 28px rgba(2,1,10,0.6)
+        }
+        .btn:hover{transform:translateY(-4px);box-shadow:0 18px 48px rgba(0,0,0,0.6)}
+        .btn.primary{background:linear-gradient(90deg, rgba(255,215,80,0.06), rgba(255,215,80,0.02));border:1px solid rgba(255,215,80,0.18)}
+
+        /* small footer text */
+        .note{margin-top:14px;color:rgba(255,255,255,0.55);font-size:.92rem}
+
+        /* canvas layers */
+        canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+        /* responsiveness */
+        @media (max-width:520px){.card{padding:26px 20px}.year{font-size:3.6rem}}
+
+        @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+        /* LIGHT THEME ADJUSTMENTS */
+        body.light{
+            background: linear-gradient(180deg,#f8f7fb,#ffffff);
+            color:#111;
+        }
+        body.light .card{
+            background: linear-gradient(180deg,#ffffff,#f6f6f8);
+            border:1px solid rgba(3,2,9,0.06);
+            box-shadow: 0 16px 40px rgba(10,10,12,0.06), inset 0 1px 0 rgba(255,255,255,0.6);
+        }
+        body.light .vignette{background:radial-gradient(closest-side, rgba(0,0,0,0.03), transparent 40%);mix-blend-mode:multiply}
+        body.light .title{
+            background: linear-gradient(90deg,#c79f40,#8f6b10);
+            -webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 4px 14px rgba(0,0,0,0.06);
+        }
+        body.light .year{color:#b77f05;text-shadow:0 6px 18px rgba(183,127,5,0.06)}
+        body.light .subtitle, body.light .note{color:rgba(0,0,0,0.6)}
+        body.light #countdown{color:#7a5500;border-color:rgba(122,85,0,0.06);background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(245,245,245,0.9))}
+        body.light .btn{color:#7a5500;border-color:rgba(0,0,0,0.06);box-shadow:0 8px 28px rgba(10,10,12,0.06)}
+        body.light .btn.primary{border-color:rgba(122,85,0,0.18)}
+    </style>
+</head>
+<body>
+
+    <div class="vignette"></div>
+    <canvas id="fx"></canvas>
+
+    <main class="scene">
+        <section class="card">
+            <div class="title">Happy New Year</div>
+            <div class="year">2026</div>
+            <div class="subtitle">Wishing you a prosperous year filled with bold success and bright moments ✨</div>
+
+            <div id="countdown" aria-live="polite">—</div>
+
+            <div class="controls">
+                <button class="btn primary" id="celebrate">Celebrate</button>
+                <button class="btn" id="music">Play Music</button>
+            </div>
+
+            <div class="note">Designed with care — feel free to customize the message and sounds.</div>
+        </section>
+    </main>
+
+    <!-- local music files (place `new-year-tone.mp3` and `new-year-fireworks.mp3` in the same folder) -->
+    <audio id="bgMusic" loop preload="none">
+        <source src="new-year-tone.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="fxAudio" preload="auto">
+        <source src="new-year-fireworks.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        /* Countdown to 2026 */
+        const countdownEl = document.getElementById('countdown');
+        function updateCountdown(){
+            const target = new Date('2026-01-01T00:00:00');
+            const now = new Date();
+            let diff = Math.max(0, target - now);
+            if(diff === 0){countdownEl.textContent = '🎆 Welcome 2026 🎆';return}
+            const days = Math.floor(diff / (1000*60*60*24));
+            diff -= days*(1000*60*60*24);
+            const hrs = String(Math.floor(diff/(1000*60*60))).padStart(2,'0');
+            diff -= hrs*(1000*60*60);
+            const mins = String(Math.floor(diff/(1000*60))).padStart(2,'0');
+            diff -= mins*(1000*60);
+            const secs = String(Math.floor(diff/1000)).padStart(2,'0');
+            countdownEl.textContent = `${days}d ${hrs}h ${mins}m ${secs}s remaining`;
+        }
+        setInterval(updateCountdown,1000);updateCountdown();
+
+        /* Music toggle */
+        const music = document.getElementById('bgMusic');
+        let musicPlaying = false;
+        document.getElementById('music').addEventListener('click', ()=>{
+            if(!musicPlaying){music.play().catch(()=>{});document.getElementById('music').textContent='Pause Music'}
+            else {music.pause();document.getElementById('music').textContent='Play Music'}
+            musicPlaying = !musicPlaying;
+        });
+
+        /* Theme toggle removed: theme is now fixed unless changed in CSS */
+
+        /* Canvas: elegant gold sparkles + soft bursts */
+        const canvas = document.getElementById('fx');
+        const ctx = canvas.getContext('2d');
+        const DPR = Math.min(window.devicePixelRatio||1,2);
+        function resize(){canvas.width = innerWidth * DPR; canvas.height = innerHeight * DPR; canvas.style.width = innerWidth+'px'; canvas.style.height = innerHeight+'px'; ctx.setTransform(DPR,0,0,DPR,0,0)}
+        addEventListener('resize', resize);resize();
+
+        class Spark{constructor(x,y,dx,dy,r,c){this.x=x;this.y=y;this.dx=dx;this.dy=dy;this.r=r;this.c=c;this.life=80}
+            step(){this.x+=this.dx;this.y+=this.dy;this.dy+=0.02;this.life--}
+            draw(){ctx.beginPath();ctx.fillStyle=this.c;ctx.globalAlpha=Math.max(0, this.life/90);ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1}
+        }
+        let sparks=[];
+        function burst(x,y,count=50){for(let i=0;i<count;i++){const ang=Math.random()*Math.PI*2;const sp=new Spark(x,y,Math.cos(ang)*(Math.random()*4+1),Math.sin(ang)*(Math.random()*4+1),Math.random()*1.6+0.6, ['#ffd66b','#fff3d1','#ffe39b'][Math.random()*3|0]);sparks.push(sp)}}
+        // gentle ambient sparkles
+        setInterval(()=>{const x=Math.random()*innerWidth;const y=Math.random()*innerHeight*0.6;burstSmall(x,y)},700);
+        function burstSmall(x,y){burst(x,y,14)}
+
+        function render(){
+            ctx.clearRect(0,0,innerWidth,innerHeight);
+            ctx.globalCompositeOperation='lighter';
+            for(let i=sparks.length-1;i>=0;i--){
+                const s=sparks[i];
+                s.step();
+                s.draw();
+                if(s.life<=0) removeSpark(i);
+            }
+            requestAnimationFrame(render);
+        }
+        function removeSpark(i){sparks.splice(i,1)}
+        render();
+
+        // Celebrate button (play fireworks sound + visual burst)
+        document.getElementById('celebrate').addEventListener('click', ()=>{
+            const fx = document.getElementById('fxAudio');
+            try{fx.currentTime = 0; fx.volume = 0.92; fx.play().catch(()=>{});}catch(e){}
+            for(let i=0;i<6;i++) burst(Math.random()*innerWidth, Math.random()*innerHeight*0.5, 80);
+        })
+
+        // small accessibility: keyboard Enter triggers celebrate
+        document.addEventListener('keydown', e=>{if(e.key==='Enter')document.getElementById('celebrate').click()});
+    </script>
+</body>
+</html>
